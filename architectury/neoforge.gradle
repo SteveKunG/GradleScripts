@@ -1,0 +1,46 @@
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+sourceSets.main.resources {
+    if (project.hasProperty("use_datagen")) {
+        srcDir "src/generated/resources"
+    }
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${neoforge_version}"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
+}
+
+processResources {
+    inputs.property "version", mod_version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": mod_version
+    }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+//TODO Waiting for https://github.com/SpongePowered/Mixin/issues/408 to be fixed
+/*afterEvaluate {
+    loom.runs.configureEach {
+        vmArg "-javaagent:${configurations.compileClasspath.find { it.name.contains("mixin-patched") }}"
+    }
+}*/
