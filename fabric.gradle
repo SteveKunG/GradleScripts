@@ -7,8 +7,32 @@ base {
     archivesName = project.archives_base_name
 }
 
+ext {
+    commonVmArgs = [
+            "-XX:+AllowEnhancedClassRedefinition",
+            "-XX:+IgnoreUnrecognizedVMOptions"
+    ]
+
+    hotswapVmArgs = [
+            "-Dfabric.systemLibraries=${System.getProperty("java.home")}/lib/hotswap/hotswap-agent.jar".toString(),
+            "-XX:HotswapAgent=fatjar"
+    ]
+
+    commonProperties = ["mixin.debug.export": "true", "mixin.hotSwap": "true"]
+
+    if (project.hasProperty("username") && project.hasProperty("uuid")) {
+        usernameAndUUID = ["--username": "${username}", "--uuid": "${uuid}"]
+    }
+}
+
 version = project.mod_version
 group = project.maven_group
+
+sourceSets.main.resources {
+    if (project.hasProperty("use_datagen")) {
+        srcDir "src/generated/resources"
+    }
+}
 
 loom {
     decompilers {
@@ -37,6 +61,12 @@ dependencies {
     }
 
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+}
+
+jar {
+    if (project.hasProperty("use_datagen")) {
+        exclude ".cache"
+    }
 }
 
 processResources {

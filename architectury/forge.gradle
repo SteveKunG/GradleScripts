@@ -11,6 +11,12 @@ configurations {
     developmentForge.extendsFrom common
 }
 
+sourceSets.main.resources {
+    if (project.hasProperty("use_datagen")) {
+        srcDir "src/generated/resources"
+    }
+}
+
 dependencies {
     forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 

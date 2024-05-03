@@ -2,6 +2,18 @@ architectury {
     common(project.enabled_platforms.split(","))
 }
 
+sourceSets.main.resources {
+    if (project.hasProperty("use_datagen")) {
+        srcDir "src/generated/resources"
+    }
+}
+
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+}
+
+jar {
+    if (project.hasProperty("use_datagen")) {
+        exclude ".cache"
+    }
 }

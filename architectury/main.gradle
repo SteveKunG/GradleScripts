@@ -45,9 +45,30 @@ allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
 
-    archivesBaseName = project.archives_base_name
+    base {
+        archivesName = project.archives_base_name
+    }
+
     version = project.mod_version
     group = project.maven_group
+
+    ext {
+        commonVmArgs = [
+                "-XX:+AllowEnhancedClassRedefinition",
+                "-XX:+IgnoreUnrecognizedVMOptions"
+        ]
+
+        hotswapVmArgs = [
+                "-Dfabric.systemLibraries=${System.getProperty("java.home")}/lib/hotswap/hotswap-agent.jar".toString(),
+                "-XX:HotswapAgent=fatjar"
+        ]
+
+        commonProperties = ["mixin.debug.export": "true", "mixin.hotSwap": "true"]
+
+        if (project.hasProperty("username") && project.hasProperty("uuid")) {
+            usernameAndUUID = ["--username": "${username}", "--uuid": "${uuid}"]
+        }
+    }
 
     repositories {
         maven {
