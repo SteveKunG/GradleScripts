@@ -18,10 +18,18 @@ ext {
             "-XX:HotswapAgent=fatjar"
     ]
 
-    commonProperties = ["mixin.debug.export": "true", "mixin.hotSwap": "true"]
+    commonProperties = [
+            "mixin.debug.export": "true",
+            "mixin.hotSwap": "true"
+    ]
 
     if (project.hasProperty("username") && project.hasProperty("uuid")) {
-        usernameAndUUID = ["--username": "${username}", "--uuid": "${uuid}"]
+        usernameAndUUID = [
+                "--username",
+                "${username}".toString(),
+                "--uuid",
+                "${uuid}".toString()
+        ]
     }
 }
 
