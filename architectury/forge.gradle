@@ -17,8 +17,24 @@ sourceSets.main.resources {
     }
 }
 
+loom {
+    if (project.hasProperty("use_mixin")) {
+        forge {
+            mixinConfigs = ["mixins.${archives_base_name}.json", "mixins.${archives_base_name}_forge.json"]
+
+            mixin {
+                defaultRefmapName = "mixins.${archives_base_name}_forge.refmap.json"
+            }
+        }
+    }
+}
+
 dependencies {
     forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    if (project.hasProperty("cloth_config_version")) {
+        modImplementation "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
+    }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive false }
