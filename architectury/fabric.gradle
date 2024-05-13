@@ -40,6 +40,11 @@ dependencies {
             exclude group: "net.fabricmc", module: "fabric-loader"
         }
     }
+    if (rootProject.hasProperty("devauth_version")) {
+        modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${rootProject.devauth_version}") {
+            exclude group: "net.fabricmc", module: "fabric-loader"
+        }
+    }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }

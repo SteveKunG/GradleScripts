@@ -35,6 +35,9 @@ dependencies {
     if (project.hasProperty("cloth_config_version")) {
         modImplementation "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
     }
+    if (rootProject.hasProperty("devauth_version")) {
+        modRuntimeOnly "me.djtheredstoner:DevAuth-forge-latest:${devauth_version}"
+    }
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive false }
