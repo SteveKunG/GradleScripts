@@ -112,8 +112,6 @@ curseforge {
         afterEvaluate {
             uploadTask.dependsOn(remapJar)
         }
-        addArtifact shadowJar
-        addArtifact remapSourcesJar
     }
     options {
         debug = upload_debug.toBoolean()
