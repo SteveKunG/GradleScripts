@@ -104,6 +104,9 @@ allprojects {
 
     java {
         withSourcesJar()
+
+        sourceCompatibility = project.java_version
+        targetCompatibility = project.java_version
     }
 }
 
