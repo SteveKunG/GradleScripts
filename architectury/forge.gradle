@@ -29,11 +29,7 @@ sourceSets.main.resources {
 loom {
     if (project.hasProperty("use_mixin")) {
         forge {
-            mixinConfigs = ["mixins.${archives_base_name}.json", "mixins.${archives_base_name}_forge.json"]
-
-            mixin {
-                defaultRefmapName = "mixins.${archives_base_name}_forge.refmap.json"
-            }
+            mixinConfig "mixins.${archives_base_name}.json"
         }
     }
 }
