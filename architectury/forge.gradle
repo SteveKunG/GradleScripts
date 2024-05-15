@@ -83,14 +83,16 @@ curseforge {
             it.displayName = "[Forge ${minecraft_version}] ${display_name} v${mod_version}"
         }
 
-        relations {
-            if (project.hasProperty("curseforge_forge_required_dependencies") && !curseforge_forge_required_dependencies.isEmpty()) {
-                curseforge_forge_required_dependencies.split(",").each {
+        if (project.hasProperty("curseforge_forge_required_dependencies") && !curseforge_forge_required_dependencies.isEmpty()) {
+            curseforge_forge_required_dependencies.split(",").each {
+                relations {
                     String dep -> it.requiredDependency dep
                 }
             }
-            if (project.hasProperty("curseforge_forge_optional_dependencies") && !curseforge_forge_optional_dependencies.isEmpty()) {
-                curseforge_forge_optional_dependencies.split(",").each {
+        }
+        if (project.hasProperty("curseforge_forge_optional_dependencies") && !curseforge_forge_optional_dependencies.isEmpty()) {
+            curseforge_forge_optional_dependencies.split(",").each {
+                relations {
                     String dep -> it.optionalDependency dep
                 }
             }
