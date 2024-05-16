@@ -90,17 +90,17 @@ curseforge {
             it.displayName = "[NeoForge ${minecraft_version}] ${display_name} v${mod_version}"
         }
 
-        if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty()) {
-            curseforge_neoforge_required_dependencies.split(",").each {
-                relations {
-                    String dep -> it.requiredDependency dep
+        if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty() || project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()) {
+            relations {
+                if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty()) {
+                    curseforge_neoforge_required_dependencies.split(",").each {
+                        String dep -> it.requiredDependency dep
+                    }
                 }
-            }
-        }
-        if (project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()) {
-            curseforge_neoforge_optional_dependencies.split(",").each {
-                relations {
-                    String dep -> it.optionalDependency dep
+                if (project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()) {
+                    curseforge_neoforge_optional_dependencies.split(",").each {
+                        String dep -> it.optionalDependency dep
+                    }
                 }
             }
         }
