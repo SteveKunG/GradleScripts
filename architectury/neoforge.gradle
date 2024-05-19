@@ -133,11 +133,6 @@ modrinth {
             gameVersions.add it
         }
     }
-    if (project.hasProperty("modrinth_additional_loaders") && !modrinth_additional_loaders.isEmpty()) {
-        modrinth_additional_loaders.split(",").each {
-            loaders.add it
-        }
-    }
 
     dependencies {
         if (project.hasProperty("modrinth_neoforge_required_dependencies") && !modrinth_neoforge_required_dependencies.isEmpty()) {
