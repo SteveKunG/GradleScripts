@@ -21,13 +21,13 @@ configurations {
 }
 
 sourceSets.main.resources {
-    if (project.hasProperty("use_datagen")) {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
         srcDir "src/generated/resources"
     }
 }
 
 loom {
-    if (project.hasProperty("use_mixin")) {
+    if (project.hasProperty("use_mixin") && use_datagen.toBoolean()) {
         forge {
             mixinConfig "mixins.${archives_base_name}.json"
         }

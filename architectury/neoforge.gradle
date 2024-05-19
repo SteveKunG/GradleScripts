@@ -4,7 +4,7 @@ architectury {
 }
 
 sourceSets.main.resources {
-    if (project.hasProperty("use_datagen")) {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
         srcDir "src/generated/resources"
     }
 }
@@ -34,7 +34,7 @@ repositories {
 }
 
 loom {
-    if (project.hasProperty("use_access_widener")) {
+    if (project.hasProperty("use_access_widener") && use_access_widener.toBoolean()) {
         neoForge {
             accessTransformers = files("src/main/resources/META-INF/accesstransformer.cfg")
         }

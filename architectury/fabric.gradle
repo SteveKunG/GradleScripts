@@ -21,10 +21,10 @@ configurations {
 }
 
 loom {
-    if (project.hasProperty("use_access_widener")) {
+    if (project.hasProperty("use_access_widener") && use_access_widener.toBoolean()) {
         accessWidenerPath = project(":common").loom.accessWidenerPath
     }
-    if (project.hasProperty("use_mixin")) {
+    if (project.hasProperty("use_mixin") && use_mixin.toBoolean()) {
         mixin {
             defaultRefmapName = "mixins.${archives_base_name}_fabric.refmap.json"
         }

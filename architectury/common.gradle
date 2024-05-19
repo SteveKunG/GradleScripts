@@ -3,17 +3,17 @@ architectury {
 }
 
 sourceSets.main.resources {
-    if (project.hasProperty("use_datagen")) {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
         srcDir "src/generated/resources"
     }
 }
 
 loom {
-    if (project.hasProperty("use_access_widener")) {
+    if (project.hasProperty("use_access_widener") && use_access_widener.toBoolean()) {
         accessWidenerPath = project(":fabric").file("src/main/resources/${archives_base_name}.accesswidener")
     }
 
-    if (project.hasProperty("use_mixin")) {
+    if (project.hasProperty("use_mixin") && use_mixin.toBoolean()) {
         mixin {
             defaultRefmapName = "mixins.${archives_base_name}.refmap.json"
         }
@@ -32,7 +32,7 @@ dependencies {
 }
 
 jar {
-    if (project.hasProperty("use_datagen")) {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
         exclude ".cache"
     }
 }
