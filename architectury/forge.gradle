@@ -27,7 +27,7 @@ sourceSets.main.resources {
 }
 
 loom {
-    if (project.hasProperty("use_mixin") && use_datagen.toBoolean()) {
+    if (project.hasProperty("use_mixin") && use_mixin.toBoolean()) {
         forge {
             mixinConfig "mixins.${archives_base_name}.json"
         }
