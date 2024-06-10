@@ -58,7 +58,7 @@ dependencies {
 processResources {
     inputs.property "version", mod_version
 
-    filesMatching("META-INF/mods.toml") {
+    filesMatching(["META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
         expand "version": mod_version
     }
 }
