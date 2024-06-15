@@ -141,7 +141,7 @@ modrinth {
         }
     }
     if (project.hasProperty("quilt_compatible")) {
-        loaders.add "Quilt"
+        loaders.add "quilt"
     }
 
     dependencies {
