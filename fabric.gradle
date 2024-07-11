@@ -92,11 +92,11 @@ dependencies {
         parchment("org.parchmentmc.data:parchment-${parchmentmc_version}@zip")
     }
 
-    if (project.hasProperty("fabric_version")) {
-        modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    if (project.hasProperty("fabric_api_version")) {
+        modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     }
-    if (project.hasProperty("mod_menu_version")) {
-        modImplementation("com.terraformersmc:modmenu:${mod_menu_version}") {
+    if (project.hasProperty("modmenu_version")) {
+        modImplementation("com.terraformersmc:modmenu:${modmenu_version}") {
             exclude group: "net.fabricmc.fabric-api"
             exclude group: "net.fabricmc", module: "fabric-loader"
         }
