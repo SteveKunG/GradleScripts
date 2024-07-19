@@ -90,7 +90,10 @@ curseforge {
             it.displayName = "[NeoForge ${minecraft_version}] ${display_name} v${mod_version}"
         }
 
-        if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty() || project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()) {
+        if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty()
+                || project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()
+                || project.hasProperty("curseforge_neoforge_embedded_dependencies") && !curseforge_neoforge_embedded_dependencies.isEmpty()
+        ) {
             relations {
                 if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty()) {
                     curseforge_neoforge_required_dependencies.split(",").each {
@@ -100,6 +103,11 @@ curseforge {
                 if (project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()) {
                     curseforge_neoforge_optional_dependencies.split(",").each {
                         String dep -> it.optionalDependency dep
+                    }
+                }
+                if (project.hasProperty("curseforge_neoforge_embedded_dependencies") && !curseforge_neoforge_embedded_dependencies.isEmpty()) {
+                    curseforge_neoforge_embedded_dependencies.split(",").each {
+                        String dep -> it.embeddedLibrary dep
                     }
                 }
             }
@@ -143,6 +151,11 @@ modrinth {
         if (project.hasProperty("modrinth_neoforge_optional_dependencies") && !modrinth_neoforge_optional_dependencies.isEmpty()) {
             modrinth_neoforge_optional_dependencies.split(",").each {
                 optional.project it
+            }
+        }
+        if (project.hasProperty("modrinth_neoforge_embedded_dependencies") && !modrinth_neoforge_embedded_dependencies.isEmpty()) {
+            modrinth_neoforge_embedded_dependencies.split(",").each {
+                embedded.project it
             }
         }
     }

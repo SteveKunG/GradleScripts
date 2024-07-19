@@ -97,7 +97,10 @@ curseforge {
             it.displayName = "[Fabric ${minecraft_version}] ${display_name} v${mod_version}"
         }
 
-        if (project.hasProperty("curseforge_fabric_required_dependencies") && !curseforge_fabric_required_dependencies.isEmpty() || project.hasProperty("curseforge_fabric_optional_dependencies") && !curseforge_fabric_optional_dependencies.isEmpty()) {
+        if (project.hasProperty("curseforge_fabric_required_dependencies") && !curseforge_fabric_required_dependencies.isEmpty()
+                || project.hasProperty("curseforge_fabric_optional_dependencies") && !curseforge_fabric_optional_dependencies.isEmpty()
+                || project.hasProperty("curseforge_fabric_embedded_dependencies") && !curseforge_fabric_embedded_dependencies.isEmpty()
+        ) {
             relations {
                 if (project.hasProperty("curseforge_fabric_required_dependencies") && !curseforge_fabric_required_dependencies.isEmpty()) {
                     curseforge_fabric_required_dependencies.split(",").each {
@@ -107,6 +110,11 @@ curseforge {
                 if (project.hasProperty("curseforge_fabric_optional_dependencies") && !curseforge_fabric_optional_dependencies.isEmpty()) {
                     curseforge_fabric_optional_dependencies.split(",").each {
                         String dep -> it.optionalDependency dep
+                    }
+                }
+                if (project.hasProperty("curseforge_fabric_embedded_dependencies") && !curseforge_fabric_embedded_dependencies.isEmpty()) {
+                    curseforge_fabric_embedded_dependencies.split(",").each {
+                        String dep -> it.embeddedLibrary dep
                     }
                 }
             }
@@ -153,6 +161,11 @@ modrinth {
         if (project.hasProperty("modrinth_fabric_optional_dependencies") && !modrinth_fabric_optional_dependencies.isEmpty()) {
             modrinth_fabric_optional_dependencies.split(",").each {
                 optional.project it
+            }
+        }
+        if (project.hasProperty("modrinth_fabric_embedded_dependencies") && !modrinth_fabric_embedded_dependencies.isEmpty()) {
+            modrinth_fabric_embedded_dependencies.split(",").each {
+                embedded.project it
             }
         }
     }
