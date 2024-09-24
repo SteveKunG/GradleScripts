@@ -43,10 +43,26 @@ subprojects {
 
 allprojects {
     apply plugin: "java"
+    apply plugin: "idea"
+    apply plugin: "eclipse"
     apply plugin: "architectury-plugin"
 
     base {
         archivesName = project.archives_base_name
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+
+    eclipse {
+        classpath {
+            downloadJavadoc = true
+            downloadSources = true
+        }
     }
 
     version = project.mod_version
