@@ -37,7 +37,7 @@ version = project.mod_version
 group = project.maven_group
 
 sourceSets.main.resources {
-    if (project.hasProperty("use_datagen")) {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
         srcDir "src/generated/resources"
     }
 }
@@ -49,7 +49,7 @@ loom {
             options.put("ind", "    ")
         }
     }
-    if (project.hasProperty("use_access_widener")) {
+    if (project.hasProperty("use_access_widener") && use_access_widener.toBoolean()) {
         accessWidenerPath = file("src/main/resources/${archives_base_name}.accesswidener")
     }
 }
@@ -130,7 +130,7 @@ dependencies {
 }
 
 jar {
-    if (project.hasProperty("use_datagen")) {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
         exclude ".cache"
     }
 }
