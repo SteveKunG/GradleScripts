@@ -44,15 +44,25 @@ dependencies {
         modRuntimeOnly "me.djtheredstoner:DevAuth-forge-latest:${devauth_version}"
     }
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowBundle(project(path: ":common", configuration: "transformProductionForge"))
 }
 
 processResources {
-    inputs.property "version", mod_version
+    inputs.property("display_name", display_name)
+    inputs.property("mod_id", mod_id)
+    inputs.property("mod_description", mod_description)
+    inputs.property("version", mod_version)
+
+    def placeholders = [
+        "display_name"   : display_name,
+        "mod_id"         : mod_id,
+        "mod_description": mod_description,
+        "version"        : mod_version
+    ]
 
     filesMatching("META-INF/mods.toml") {
-        expand "version": mod_version
+        expand placeholders
     }
 }
 

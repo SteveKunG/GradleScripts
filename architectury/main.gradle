@@ -24,8 +24,8 @@ subprojects {
 
     repositories {
         maven {
-            name "ParchmentMC"
-            url "https://maven.parchmentmc.org"
+            name = "ParchmentMC"
+            url = "https://maven.parchmentmc.org"
             content {
                 includeGroup "org.parchmentmc.data"
             }
@@ -96,29 +96,29 @@ allprojects {
 
     repositories {
         maven {
-            name "CurseMaven"
-            url "https://www.cursemaven.com/"
+            name = "CurseMaven"
+            url = "https://www.cursemaven.com/"
             content {
                 includeGroup "curse.maven"
             }
         }
         maven {
-            name "Modrinth Maven"
-            url "https://api.modrinth.com/maven"
+            name = "Modrinth Maven"
+            url = "https://api.modrinth.com/maven"
             content {
                 includeGroup "maven.modrinth"
             }
         }
         maven {
-            name "DevAuth"
-            url "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
+            name = "DevAuth"
+            url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
             content {
                 includeGroup "me.djtheredstoner"
             }
         }
         maven {
-            name "TerraformersMC"
-            url "https://maven.terraformersmc.com/releases"
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/releases"
             content {
                 includeGroup "com.terraformersmc"
             }
@@ -141,19 +141,19 @@ allprojects {
 }
 
 tasks.register("curseforgeModrinthFabric") {
-    group "publishing"
+    group = "publishing"
     dependsOn ":fabric:modrinth"
     dependsOn ":fabric:curseforge"
 }
 
 tasks.register("curseforgeModrinthForge") {
-    group "publishing"
+    group = "publishing"
     dependsOn ":forge:modrinth"
     dependsOn ":forge:curseforge"
 }
 
 tasks.register("curseforgeModrinthNeoForge") {
-    group "publishing"
+    group = "publishing"
     dependsOn ":neoforge:modrinth"
     dependsOn ":neoforge:curseforge"
 }
