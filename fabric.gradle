@@ -70,29 +70,29 @@ eclipse {
 
 repositories {
     maven {
-        name "ParchmentMC"
-        url "https://maven.parchmentmc.org"
+        name = "ParchmentMC"
+        url = "https://maven.parchmentmc.org"
         content {
             includeGroup "org.parchmentmc.data"
         }
     }
     maven {
-        name "Shedaniel Maven"
-        url "https://maven.shedaniel.me"
+        name = "Shedaniel Maven"
+        url = "https://maven.shedaniel.me"
         content {
             includeGroup "me.shedaniel.cloth"
         }
     }
     maven {
-        name "TerraformersMC"
-        url "https://maven.terraformersmc.com/releases"
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/releases"
         content {
             includeGroup "com.terraformersmc"
         }
     }
     maven {
-        name "DevAuth"
-        url "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
+        name = "DevAuth"
+        url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
         content {
             includeGroup "me.djtheredstoner"
         }
