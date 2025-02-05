@@ -160,7 +160,7 @@ tasks.register("curseforgeModrinthNeoForge") {
 
 if (project.hasProperty("version_lib_dir")) {
     tasks.register("updateVersionLib") {
-        group "publishing"
+        group = "publishing"
         def versionFile = file("${version_lib_dir}/${archives_base_name}.json")
         def jsonBuilder = new JsonBuilder(new JsonSlurper().parseText(versionFile.text))
         def jsonElement = jsonBuilder.content
