@@ -1,0 +1,65 @@
+sourceSets.main.resources {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
+        srcDir "src/generated/resources"
+    }
+}
+
+loom {
+    decompilers {
+        vineflower {
+            options.put("pll", "32767")
+            options.put("ind", "    ")
+        }
+    }
+
+    if (project.hasProperty("use_access_widener") && use_access_widener.toBoolean()) {
+        accessWidenerPath = project(":fabric").file("src/main/resources/${archives_base_name}.accesswidener")
+    }
+
+    if (project.hasProperty("use_mixin") && use_mixin.toBoolean()) {
+        mixin {
+            defaultRefmapName = "mixins.${archives_base_name}.refmap.json"
+        }
+    }
+}
+
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Sponge"
+                url = "https://repo.spongepowered.org/repository/maven-public"
+            }
+        }
+        filter {
+            includeGroupAndSubgroups("org.spongepowered")
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchmentmc_version}@zip")
+    }
+
+    if (project.hasProperty("cloth_config_version")) {
+        modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+            exclude group: "net.fabricmc.fabric-api"
+            exclude group: "net.fabricmc", module: "fabric-loader"
+        }
+    }
+
+    compileOnly group: "org.spongepowered", name: "mixin", version: "0.8.5"
+    compileOnly group: "io.github.llamalad7", name: "mixinextras-common", version: "0.3.5"
+    annotationProcessor group: "io.github.llamalad7", name: "mixinextras-common", version: "0.3.5"
+
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+}
+
+jar {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
+        exclude ".cache"
+    }
+}

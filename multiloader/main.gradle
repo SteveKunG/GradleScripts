@@ -1,0 +1,146 @@
+allprojects {
+    apply plugin: "java"
+    apply plugin: "idea"
+    apply plugin: "eclipse"
+
+    java {
+        sourceCompatibility = project.java_version
+        targetCompatibility = project.java_version
+    }
+
+    base {
+        archivesName = project.archives_base_name
+    }
+
+    version = project.mod_version
+    group = project.maven_group
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+
+    eclipse {
+        classpath {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+
+    ext {
+        commonVmArgs = [
+                "-XX:+AllowEnhancedClassRedefinition",
+                "-XX:+IgnoreUnrecognizedVMOptions"
+        ]
+
+        hotswapVmArgs = [
+                "-Dfabric.systemLibraries=${System.getProperty("java.home")}/lib/hotswap/hotswap-agent.jar".toString(),
+                "-XX:HotswapAgent=fatjar"
+        ]
+
+        commonProperties = [
+                "mixin.debug.export": "true",
+                "mixin.hotSwap"     : "true"
+        ]
+
+        if (project.hasProperty("username") && project.hasProperty("uuid")) {
+            usernameAndUUID = [
+                    "--username",
+                    "${username}".toString(),
+                    "--uuid",
+                    "${uuid}".toString()
+            ]
+        }
+    }
+
+    repositories {
+        maven {
+            name = "CurseMaven"
+            url = "https://www.cursemaven.com/"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+        maven {
+            name = "Modrinth Maven"
+            url = "https://api.modrinth.com/maven"
+            content {
+                includeGroup "maven.modrinth"
+            }
+        }
+        maven {
+            name = "DevAuth"
+            url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
+            content {
+                includeGroup "me.djtheredstoner"
+            }
+        }
+        maven {
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/releases"
+            content {
+                includeGroup "com.terraformersmc"
+            }
+        }
+        maven {
+            name = "ParchmentMC"
+            url = "https://maven.parchmentmc.org"
+            content {
+                includeGroup "org.parchmentmc.data"
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = "UTF-8"
+            options.release = project.java_version as int
+        }
+    }
+
+    java {
+        withSourcesJar()
+
+        sourceCompatibility = project.java_version
+        targetCompatibility = project.java_version
+    }
+}
+
+subprojects {
+    apply plugin: "com.gradleup.shadow"
+    apply plugin: "com.matthewprenger.cursegradle"
+    apply plugin: "com.modrinth.minotaur"
+
+    repositories {
+        maven {
+            name = "Architectury"
+            url = "https://maven.architectury.dev"
+        }
+    }
+}
+
+if (enabled_platforms.contains("fabric")) {
+    tasks.register("curseforgeModrinthFabric") {
+        group = "publishing"
+        dependsOn ":fabric:modrinth"
+        dependsOn ":fabric:curseforge"
+    }
+}
+
+if (enabled_platforms.contains("forge")) {
+    tasks.register("curseforgeModrinthForge") {
+        group = "publishing"
+        dependsOn ":forge:modrinth"
+        dependsOn ":forge:curseforge"
+    }
+}
+
+if (enabled_platforms.contains("neoforge")) {
+    tasks.register("curseforgeModrinthNeoForge") {
+        group = "publishing"
+        dependsOn ":neoforge:modrinth"
+        dependsOn ":neoforge:curseforge"
+    }
+}

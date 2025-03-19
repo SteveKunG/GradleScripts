@@ -1,0 +1,148 @@
+neoForge {
+    version = neoforge_version
+
+    if (project.hasProperty("use_access_widener") && use_access_widener.toBoolean()) {
+        accessTransformers = files("src/main/resources/META-INF/accesstransformer.cfg")
+    }
+
+    parchment {
+        minecraftVersion = parchmentmc_version.split(":")[0]
+        mappingsVersion = parchmentmc_version.split(":")[1]
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    if (project.hasProperty("cloth_config_version")) {
+        implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+    }
+    if (rootProject.hasProperty("devauth_version")) {
+        runtimeOnly "me.djtheredstoner:DevAuth-neoforge:${devauth_version}"
+    }
+}
+
+processResources {
+    inputs.property("display_name", display_name)
+    inputs.property("mod_id", mod_id)
+    inputs.property("mod_description", mod_description)
+    inputs.property("version", mod_version)
+
+    def placeholders = [
+            "display_name"   : display_name,
+            "mod_id"         : mod_id,
+            "mod_description": mod_description,
+            "version"        : mod_version
+    ]
+
+    filesMatching(["META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
+        expand placeholders
+    }
+}
+
+afterEvaluate {
+    neoForge.runs.configureEach {
+        jvmArgument "-javaagent:${configurations.compileClasspath.find { it.name.contains("sponge-mixin") }}"
+    }
+}
+
+sourceSets.main.resources {
+    if (project.hasProperty("use_datagen") && use_datagen.toBoolean()) {
+        srcDir "src/generated/resources"
+    }
+}
+
+curseforge {
+    apiKey = project.hasProperty("curseforge_api_token") ? curseforge_api_token : ""
+    project {
+        id = curseforge_project_id
+        changelog = rootProject.file("CHANGE_LOG.md")
+        changelogType = "markdown"
+        releaseType = release_type
+        addGameVersion "NeoForge"
+        addGameVersion minecraft_version
+
+        if (project.hasProperty("curseforge_additional_game_versions") && !curseforge_additional_game_versions.isEmpty()) {
+            curseforge_additional_game_versions.split(",").each {
+                String gameVersion -> addGameVersion gameVersion
+            }
+        }
+
+        mainArtifact(jar.archiveFile) {
+            it.displayName = "[NeoForge ${minecraft_version}] ${display_name} v${mod_version}"
+        }
+
+        if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty()
+                || project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()
+                || project.hasProperty("curseforge_neoforge_embedded_dependencies") && !curseforge_neoforge_embedded_dependencies.isEmpty()
+        ) {
+            relations {
+                if (project.hasProperty("curseforge_neoforge_required_dependencies") && !curseforge_neoforge_required_dependencies.isEmpty()) {
+                    curseforge_neoforge_required_dependencies.split(",").each {
+                        String dep -> it.requiredDependency dep
+                    }
+                }
+                if (project.hasProperty("curseforge_neoforge_optional_dependencies") && !curseforge_neoforge_optional_dependencies.isEmpty()) {
+                    curseforge_neoforge_optional_dependencies.split(",").each {
+                        String dep -> it.optionalDependency dep
+                    }
+                }
+                if (project.hasProperty("curseforge_neoforge_embedded_dependencies") && !curseforge_neoforge_embedded_dependencies.isEmpty()) {
+                    curseforge_neoforge_embedded_dependencies.split(",").each {
+                        String dep -> it.embeddedLibrary dep
+                    }
+                }
+            }
+        }
+
+        afterEvaluate {
+            uploadTask.dependsOn(jar)
+        }
+    }
+    options {
+        debug = upload_debug.toBoolean()
+        forgeGradleIntegration = false
+    }
+}
+
+modrinth {
+    debugMode = upload_debug.toBoolean()
+    token = project.hasProperty("modrinth_api_token") ? modrinth_api_token : ""
+    projectId = modrinth_project_id
+    changelog = rootProject.file("CHANGE_LOG.md").text
+    syncBodyFrom = rootProject.file("README.md").text
+    versionName = "[NeoForge ${minecraft_version}] ${display_name} v${mod_version}"
+    versionNumber = mod_version + "-neoforge"
+    versionType = release_type
+    uploadFile = jar
+    gameVersions = ["${minecraft_version}"]
+    loaders = ["neoforge"]
+
+    if (project.hasProperty("modrinth_additional_game_versions") && !modrinth_additional_game_versions.isEmpty()) {
+        modrinth_additional_game_versions.split(",").each {
+            gameVersions.add it
+        }
+    }
+
+    dependencies {
+        if (project.hasProperty("modrinth_neoforge_required_dependencies") && !modrinth_neoforge_required_dependencies.isEmpty()) {
+            modrinth_neoforge_required_dependencies.split(",").each {
+                required.project it
+            }
+        }
+        if (project.hasProperty("modrinth_neoforge_optional_dependencies") && !modrinth_neoforge_optional_dependencies.isEmpty()) {
+            modrinth_neoforge_optional_dependencies.split(",").each {
+                optional.project it
+            }
+        }
+        if (project.hasProperty("modrinth_neoforge_embedded_dependencies") && !modrinth_neoforge_embedded_dependencies.isEmpty()) {
+            modrinth_neoforge_embedded_dependencies.split(",").each {
+                embedded.project it
+            }
+        }
+    }
+}
