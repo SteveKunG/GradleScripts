@@ -140,22 +140,28 @@ allprojects {
     }
 }
 
-tasks.register("curseforgeModrinthFabric") {
-    group = "publishing"
-    dependsOn ":fabric:modrinth"
-    dependsOn ":fabric:curseforge"
+if (enabled_platforms.contains("fabric")) {
+    tasks.register("curseforgeModrinthFabric") {
+        group = "publishing"
+        dependsOn ":fabric:modrinth"
+        dependsOn ":fabric:curseforge"
+    }
 }
 
-tasks.register("curseforgeModrinthForge") {
-    group = "publishing"
-    dependsOn ":forge:modrinth"
-    dependsOn ":forge:curseforge"
+if (enabled_platforms.contains("forge")) {
+    tasks.register("curseforgeModrinthForge") {
+        group = "publishing"
+        dependsOn ":forge:modrinth"
+        dependsOn ":forge:curseforge"
+    }
 }
 
-tasks.register("curseforgeModrinthNeoForge") {
-    group = "publishing"
-    dependsOn ":neoforge:modrinth"
-    dependsOn ":neoforge:curseforge"
+if (enabled_platforms.contains("neoforge")) {
+    tasks.register("curseforgeModrinthNeoForge") {
+        group = "publishing"
+        dependsOn ":neoforge:modrinth"
+        dependsOn ":neoforge:curseforge"
+    }
 }
 
 if (project.hasProperty("version_lib_dir")) {
