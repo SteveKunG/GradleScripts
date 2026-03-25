@@ -91,6 +91,13 @@ repositories {
         }
     }
     maven {
+        name = "ModMenu Nucleoid"
+        url = "https://maven.nucleoid.xyz/"
+        content {
+            includeGroup "eu.pb4"
+        }
+    }
+    maven {
         name = "DevAuth"
         url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1"
         content {
