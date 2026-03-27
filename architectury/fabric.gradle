@@ -32,30 +32,30 @@ loom {
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 
     if (project.hasProperty("fabric_api_version")) {
-        modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+        implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     }
     if (project.hasProperty("modmenu_version")) {
-        modImplementation("com.terraformersmc:modmenu:${modmenu_version}") {
+        implementation("com.terraformersmc:modmenu:${modmenu_version}") {
             exclude group: "net.fabricmc.fabric-api"
             exclude group: "net.fabricmc", module: "fabric-loader"
         }
     }
     if (project.hasProperty("cloth_config_version")) {
-        modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+        implementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
             exclude group: "net.fabricmc.fabric-api"
             exclude group: "net.fabricmc", module: "fabric-loader"
         }
     }
     if (rootProject.hasProperty("devauth_version")) {
-        modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${rootProject.devauth_version}") {
+        localRuntime("me.djtheredstoner:DevAuth-fabric:${rootProject.devauth_version}") {
             exclude group: "net.fabricmc", module: "fabric-loader"
         }
     }
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+    common(project(path: ":common")) { transitive = false }
     shadowBundle(project(path: ":common", configuration: "transformProductionFabric"))
 }
 
@@ -103,7 +103,7 @@ curseforge {
             }
         }
 
-        mainArtifact(remapJar.archiveFile) {
+        mainArtifact(shadowJar.archiveFile) {
             it.displayName = "[Fabric ${minecraft_version}] ${display_name} v${mod_version}"
         }
 
@@ -131,7 +131,7 @@ curseforge {
         }
 
         afterEvaluate {
-            uploadTask.dependsOn(remapJar)
+            uploadTask.dependsOn(shadowJar)
         }
     }
     options {
@@ -149,7 +149,7 @@ modrinth {
     versionName = "[Fabric ${minecraft_version}] ${display_name} v${mod_version}"
     versionNumber = mod_version + "-fabric"
     versionType = release_type
-    uploadFile = remapJar
+    uploadFile = shadowJar
     gameVersions = ["${minecraft_version}"]
     loaders = ["fabric"]
 

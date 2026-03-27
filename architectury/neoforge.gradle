@@ -45,13 +45,13 @@ dependencies {
     neoForge "net.neoforged:neoforge:${neoforge_version}"
 
     if (project.hasProperty("cloth_config_version")) {
-        modImplementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+        implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     }
     if (rootProject.hasProperty("devauth_version")) {
-        modRuntimeOnly "me.djtheredstoner:DevAuth-neoforge:${devauth_version}"
+        localRuntime "me.djtheredstoner:DevAuth-neoforge:${devauth_version}"
     }
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+    common(project(path: ":common")) { transitive = false }
     shadowBundle(project(path: ":common", configuration: "transformProductionNeoForge"))
 }
 
@@ -96,7 +96,7 @@ curseforge {
             }
         }
 
-        mainArtifact(remapJar.archiveFile) {
+        mainArtifact(shadowJar.archiveFile) {
             it.displayName = "[NeoForge ${minecraft_version}] ${display_name} v${mod_version}"
         }
 
@@ -124,7 +124,7 @@ curseforge {
         }
 
         afterEvaluate {
-            uploadTask.dependsOn(remapJar)
+            uploadTask.dependsOn(shadowJar)
         }
     }
     options {
@@ -142,7 +142,7 @@ modrinth {
     versionName = "[NeoForge ${minecraft_version}] ${display_name} v${mod_version}"
     versionNumber = mod_version + "-neoforge"
     versionType = release_type
-    uploadFile = remapJar
+    uploadFile = shadowJar
     gameVersions = ["${minecraft_version}"]
     loaders = ["neoforge"]
 
