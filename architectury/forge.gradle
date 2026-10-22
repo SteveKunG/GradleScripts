@@ -40,6 +40,9 @@ dependencies {
     if (project.hasProperty("cloth_config_version")) {
         modImplementation "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
     }
+    if (project.hasProperty("yacl_version")) {
+        modImplementation("dev.isxander:yet-another-config-lib:${yacl_version}-forge")
+    }
     if (rootProject.hasProperty("devauth_version")) {
         modRuntimeOnly "me.djtheredstoner:DevAuth-forge-latest:${devauth_version}"
     }
@@ -66,12 +69,11 @@ processResources {
     }
 }
 
-//TODO Waiting for https://github.com/SpongePowered/Mixin/issues/408 to be fixed
-/*afterEvaluate {
+afterEvaluate {
     loom.runs.configureEach {
         vmArg "-javaagent:${configurations.compileClasspath.find { it.name.contains("mixin-patched") }}"
     }
-}*/
+}
 
 curseforge {
     apiKey = project.hasProperty("curseforge_api_token") ? curseforge_api_token : ""
