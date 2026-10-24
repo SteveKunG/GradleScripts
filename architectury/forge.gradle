@@ -69,12 +69,6 @@ processResources {
     }
 }
 
-afterEvaluate {
-    loom.runs.configureEach {
-        vmArg "-javaagent:${configurations.compileClasspath.find { it.name.contains("mixin-patched") }}"
-    }
-}
-
 curseforge {
     apiKey = project.hasProperty("curseforge_api_token") ? curseforge_api_token : ""
     project {
