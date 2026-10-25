@@ -48,7 +48,7 @@ dependencies {
         implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     }
     if (project.hasProperty("yacl_version")) {
-        modImplementation("dev.isxander:yet-another-config-lib:${yacl_version}-neoforge")
+        implementation("dev.isxander:yet-another-config-lib:${yacl_version}-neoforge")
     }
     if (rootProject.hasProperty("devauth_version")) {
         localRuntime "me.djtheredstoner:DevAuth-neoforge:${devauth_version}"

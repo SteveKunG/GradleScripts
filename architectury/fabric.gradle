@@ -50,7 +50,7 @@ dependencies {
         }
     }
     if (project.hasProperty("yacl_version")) {
-        modImplementation("dev.isxander:yet-another-config-lib:${yacl_version}-fabric") {
+        implementation("dev.isxander:yet-another-config-lib:${yacl_version}-fabric") {
             exclude group: "net.fabricmc.fabric-api"
             exclude group: "net.fabricmc", module: "fabric-loader"
         }
