@@ -45,7 +45,6 @@ sourceSets.main.resources {
 loom {
     decompilers {
         vineflower {
-            options.put("pll", "32767")
             options.put("ind", "    ")
         }
     }
@@ -97,6 +96,10 @@ repositories {
             includeGroup "me.djtheredstoner"
         }
     }
+    maven {
+        name = "Xander Maven"
+        url = "https://maven.isxander.dev/releases"
+    }
 }
 
 dependencies {
@@ -113,6 +116,12 @@ dependencies {
     }
     if (project.hasProperty("cloth_config_version")) {
         implementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+            exclude group: "net.fabricmc.fabric-api"
+            exclude group: "net.fabricmc", module: "fabric-loader"
+        }
+    }
+    if (project.hasProperty("yacl_version")) {
+        implementation("dev.isxander:yet-another-config-lib:${yacl_version}-fabric") {
             exclude group: "net.fabricmc.fabric-api"
             exclude group: "net.fabricmc", module: "fabric-loader"
         }
