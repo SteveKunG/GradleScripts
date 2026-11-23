@@ -31,6 +31,10 @@ repositories {
         name = "NeoForged"
         url = "https://maven.neoforged.net/releases/"
     }
+    maven {
+        name = "QuiltMC"
+        url = "https://maven.quiltmc.org/repository/release/"
+    }
 }
 
 loom {
@@ -49,6 +53,7 @@ dependencies {
     }
     if (project.hasProperty("yacl_version")) {
         implementation("dev.isxander:yet-another-config-lib:${yacl_version}-neoforge")
+        forgeRuntimeLibrary("org.quiltmc.parsers:gson:0.3.1")
     }
     if (rootProject.hasProperty("devauth_version")) {
         localRuntime "me.djtheredstoner:DevAuth-neoforge:${devauth_version}"
